@@ -43,7 +43,8 @@ def play():
         sliced = list(word)
         time.sleep(2)
     count = 1
-    emoji = "Pordle! Tries: []"
+    result = "Pordle! Tries: []"
+    emoji = "\n"
     clear()
     print(word)
     while count < 6:
@@ -63,25 +64,20 @@ CHANCE: {count}\n
             continue
         else:
             duplicate = []
-            for char in sliced:
-                for char_ in list(a):
-                    if char_ in sliced:
-                        if char_ == char:
-                            if char_ in duplicate:
-                                continue
-                            a = a.replace(
-                                char_, f"{colorama.Fore.GREEN}{char_}{colorama.Fore.RESET}")
-                            success += 1
-                            emoji += "🟩"
-                            duplicate.append(char_)
-
-                        else:
-                            a = a.replace(
-                                char_, f"{colorama.Fore.YELLOW}{char_}{colorama.Fore.RESET}")
-                            emoji += "🟨"
-                    else:
-                        emoji += "⬛"
-                        continue
+            for i in range(5):
+                if len(emoji.split("\n")[-1]) == 5:
+                    emoji += "\n"
+                if sliced[i] == a[i]:
+                    success += 1
+                    duplicate.append(i)
+                    text += f"{colorama.Fore.GREEN}{a[i]}{colorama.Fore.RESET}"
+                    emoji += "🟩"
+                elif a[i] in sliced:
+                    emoji += "🟨"
+                    text += f"{colorama.Fore.YELLOW}{a[i]}{colorama.Fore.RESET}"
+                else:
+                    emoji += "⬛"
+                    text += f"{colorama.Fore.RED}{a[i]}{colorama.Fore.RESET}"
         if isinstance(len(emoji)/5, int):
             print('newline')
             emoji += "\n"
@@ -95,9 +91,10 @@ CHANCE: {count}\n
         """
         print(text, end="\r")
         count += 1
+    result += emoji
     with open('result.txt', 'w', encoding='utf-8') as fp:
-        fp.write(emoji.replace("[]", f"{count }"))
-    return emoji.replace("[]", f"{count}")
+        fp.write(result.replace("[]", f"{count}"))
+    return result.replace("[]", f"{count}")
 
 
 def check(word: str):
