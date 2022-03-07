@@ -13,15 +13,17 @@ except ImportError:
     config.hard = False
     config.additional_words = []
     config.clean = False
-exec(
-    "words = " + base64.b64decode(
-        base64.b64decode(
-            open("words.txt", "rb").read()
-        )
-    ).decode(
-        "utf-8"
-    ) if not config.clean else "words = []"
-)
+
+if not config.clean:
+    with open("words.txt", "rb") as fp:
+        words = base64.b64decode(
+            base64.b64decode(
+                fp.read()
+            )
+        ).decode("utf-8").split("\n")
+else:
+    words = []
+
 if config.additional_words:
     words += config.additional_words
 
@@ -59,10 +61,9 @@ CHANCE: {count}\n
         elif a not in words:
             print("Not exists!")
             continue
-
         else:
+            duplicate = []
             for char in sliced:
-                duplicate = []
                 for char_ in list(a):
                     if char_ in sliced:
                         if char_ == char:
