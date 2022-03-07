@@ -1,5 +1,5 @@
 # Pordle
-Wordle but in python (heavy development)
+Wordle but in python (console)
 ## How to play this?
 Type h in the prompt
 ## gui!11!!1!!!
