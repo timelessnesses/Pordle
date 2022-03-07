@@ -43,6 +43,7 @@ def play():
     count = 1
     emoji = "Pordle! Tries: []"
     clear()
+    print(word)
     while count < 6:
         text = f"""
 {colorama.Fore.CYAN}P O R D L E{colorama.Fore.RESET}
@@ -61,13 +62,18 @@ CHANCE: {count}\n
 
         else:
             for char in sliced:
+                duplicate = []
                 for char_ in list(a):
                     if char_ in sliced:
                         if char_ == char:
+                            if char_ in duplicate:
+                                continue
                             a = a.replace(
                                 char_, f"{colorama.Fore.GREEN}{char_}{colorama.Fore.RESET}")
                             success += 1
                             emoji += "🟩"
+                            duplicate.append(char_)
+
                         else:
                             a = a.replace(
                                 char_, f"{colorama.Fore.YELLOW}{char_}{colorama.Fore.RESET}")
@@ -89,8 +95,8 @@ CHANCE: {count}\n
         print(text, end="\r")
         count += 1
     with open('result.txt', 'w', encoding='utf-8') as fp:
-        fp.write(emoji.replace("[]", f"{count - 1}"))
-    return emoji.replace("[]", f"{count - 1}")
+        fp.write(emoji.replace("[]", f"{count }"))
+    return emoji.replace("[]", f"{count}")
 
 
 def check(word: str):
